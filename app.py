@@ -88,8 +88,8 @@ st.success(f"🏆 Best Model Selected: {best_model}")
 # ==============================
 st.subheader("📈 Customer Segmentation")
 
-x_col = "tenure" if "tenure" in df.columns else df.columns[0]
-y_col = "MonthlyCharges" if "MonthlyCharges" in df.columns else df.columns[1]
+x_col = "tenure_months" if "tenure_months" in df.columns else df.columns[0]
+y_col = "monthly_charges" if "monthly_charges" in df.columns else df.columns[1]
 
 fig_cluster = px.scatter(
     df,

@@ -10,37 +10,37 @@ def load_data(path: str) -> pd.DataFrame:
     except Exception as e:
         raise Exception(f"Error loading data: {e}")
 
-
 def clean_data(df):
     df = df.copy()
 
-    # Remove spaces from column names
+    # Standardize column names
     df.columns = df.columns.str.strip()
+    df.columns = df.columns.str.replace(" ", "_")
+    df.columns = df.columns.str.lower()
 
-    # Rename target column
-    if 'Churn Label' in df.columns:
-        df.rename(columns={'Churn Label': 'Churn'}, inplace=True)
+    # Rename target
+    if 'churn_label' in df.columns:
+        df.rename(columns={'churn_label': 'churn'}, inplace=True)
 
-    # Convert target to numeric (Yes/No → 1/0)
-    if 'Churn' in df.columns:
-        df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
+    # Convert target
+    if 'churn' in df.columns:
+        df['churn'] = df['churn'].map({'Yes': 1, 'No': 0})
 
-    # Convert TotalCharges if exists
-    if 'TotalCharges' in df.columns:
-        df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+    # Convert numeric columns
+    if 'total_charges' in df.columns:
+        df['total_charges'] = pd.to_numeric(df['total_charges'], errors='coerce')
 
-    # Drop unnecessary columns (VERY IMPORTANT 🔥)
-    drop_cols = ['Churn Value', 'Churn Score', 'CLTV', 'Churn Reason']
+    # Drop leakage columns
+    drop_cols = ['churn_value', 'churn_score', 'cltv', 'churn_reason']
     for col in drop_cols:
         if col in df.columns:
             df.drop(col, axis=1, inplace=True)
 
-    # Drop missing values
-    df.dropna(inplace=True)
+    # Drop ID
+    if 'customerid' in df.columns:
+        df.drop('customerid', axis=1, inplace=True)
 
-    # Drop ID if exists
-    if 'customerID' in df.columns:
-        df.drop('customerID', axis=1, inplace=True)
+    df.dropna(inplace=True)
 
     return df
 
@@ -76,11 +76,11 @@ def preprocess_data(path: str):
     df = clean_data(df)
     df = encode_data(df)
 
-    if 'Churn' not in df.columns:
-        raise Exception("Target column 'Churn' not found!")
+    if 'churn' not in df.columns:
+        raise Exception("Target column 'churn' not found!")
 
-    X = df.drop('Churn', axis=1)
-    y = df['Churn']
+    X = df.drop('churn', axis=1)
+    y = df['churn']
 
     X_scaled, scaler = scale_features(X)
 
