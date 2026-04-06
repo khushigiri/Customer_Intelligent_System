@@ -6,7 +6,7 @@ An end-to-end Machine Learning system that combines **Customer Segmentation** an
 
 ## Live Demo
 
-https://your-streamlit-app-link.streamlit.app
+https://customer-intelligent-system.streamlit.app
 
 ---
 
