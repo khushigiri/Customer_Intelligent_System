@@ -5,9 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-# ==============================
-# 🔹 KMeans (Customer Segmentation)
-# ==============================
+# KMeans 
 
 def train_kmeans(X_scaled, n_clusters=3):
     """
@@ -25,11 +23,6 @@ def assign_clusters(kmeans, X_scaled):
     """
     return kmeans.predict(X_scaled)
 
-
-# ==============================
-# 🔹 Churn Prediction Models
-# ==============================
-
 def train_logistic_regression(X_train, y_train):
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
@@ -46,11 +39,6 @@ def evaluate_model(model, X_test, y_test):
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
     return acc
-
-
-# ==============================
-# 🔥 Model Comparison (IMPORTANT)
-# ==============================
 
 def train_and_compare_models(X_scaled, y):
     """
@@ -72,16 +60,10 @@ def train_and_compare_models(X_scaled, y):
     rf_acc = evaluate_model(rf, X_test, y_test)
     results['Random Forest'] = rf_acc
 
-    # Select best model
     best_model = rf if rf_acc >= lr_acc else lr
     best_model_name = 'Random Forest' if rf_acc >= lr_acc else 'Logistic Regression'
 
     return best_model, best_model_name, results
-
-
-# ==============================
-# 🔹 Prediction Functions
-# ==============================
 
 def predict_churn(model, X_scaled):
     """
@@ -89,7 +71,6 @@ def predict_churn(model, X_scaled):
     """
     predictions = model.predict(X_scaled)
 
-    # Some models (like RF) also support predict_proba
     if hasattr(model, "predict_proba"):
         probabilities = model.predict_proba(X_scaled)[:, 1]
     else:

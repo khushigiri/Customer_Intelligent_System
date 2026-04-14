@@ -1,9 +1,6 @@
 def generate_insights(df):
     insights = []
 
-    # ==============================
-    # 🔹 Cluster-wise churn analysis
-    # ==============================
     cluster_stats = df.groupby('Cluster')['Churn_Probability'].mean()
 
     for cluster, prob in cluster_stats.items():
@@ -20,9 +17,6 @@ def generate_insights(df):
                 f"Cluster {cluster}: Low churn risk → Maintain engagement"
             )
 
-    # ==============================
-    # 🔥 Advanced Insight (SAFE)
-    # ==============================
     if 'monthly_charges' in df.columns:
         high_value = df[
             (df['monthly_charges'] > df['monthly_charges'].mean()) &
